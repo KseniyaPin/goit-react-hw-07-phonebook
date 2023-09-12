@@ -3,7 +3,6 @@ import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 axios.defaults.baseURL = 'https://64fadba1cb9c00518f7a49af.mockapi.io/api/hw7/';
-// axios.defaults.baseURL = 'https://62584f320c918296a49543e7.mockapi.io';
 
 //  createAsyncThunk() - первым аргументом она принимает тип экшена, а вторым функцию которая должна выполнить HTTP-запрос и вернуть промис с данными, которые станут значением payload. Она возвращает асинхронный генератор экшена (операцию), при запуске которого выполнится функция с кодом запроса.
 
@@ -24,10 +23,10 @@ export const fetchContacts = createAsyncThunk(
 
 export const addContact = createAsyncThunk(
   'contacts/addContact',
-  async (text, thunkAPI) => {
+  async (contactId, thunkAPI) => {
     try {
-      const response = await axios.post('/contacts', { text });
-      return response.data;
+      await axios.post('/contacts', contactId);
+      return contactId;
     } catch (evt) {
       return thunkAPI.rejectWithValue(evt.message);
     }
@@ -38,8 +37,8 @@ export const deleteContact = createAsyncThunk(
   'contacts/deleteContact',
   async (contactId, thunkAPI) => {
     try {
-      const response = await axios.delete(`/contacts/${contactId}`);
-      return response.data;
+      await axios.delete(`/contacts/${contactId}`);
+      return contactId;
     } catch (evt) {
       return thunkAPI.rejectWithValue(evt.message);
     }

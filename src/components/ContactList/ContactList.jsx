@@ -1,39 +1,48 @@
-import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 // import PropTypes from 'prop-types';
-import { selectVisibleContacts } from '../redux/selectors';
-import { Contact } from '../Contact/Contact';
+import { selectContacts, selectFilter } from '../redux/selectors';
+import { fetchContacts, deleteContact } from '../redux/operations';
 
 export const ContactList = () => {
-  const contacts = useSelector(selectVisibleContacts);
+  const dispatch = useDispatch();
+  const contacts = useSelector(selectContacts);
+  const filter = useSelector(selectFilter);
+
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
+
+  
+  // Вычисляем массив задач которые необходимо отображать в интерфейсе
+  // const visibleContacts = selectVisibleContacts(contacts);
+  
+  // function selectVisibleContacts(contacts) {
+  //   return contacts.length > 0
+  //     ? contacts.filter(contact => {
+  //         return contact.name.toLowerCase().includes(filter.toLowerCase());
+  //       })
+  //     : [];
+  // }
+
+  // Удаления задачи при клике по кнопке удаления, и передаем ей идентификатор
+  const handleDelete = evt => dispatch(deleteContact(evt.currentTarget.id));
+
   return (
     <>
       <ul>
-        {contacts.map(contact => (
-          <li key={contact.id} id={contact.id}>
-            <Contact contact={contact} />
-          </li>
-        ))}
+        {contacts.map(({ name, number, id }) => {
+          return (
+            <li key={id} id={id} onClick={handleDelete}>
+              {name}: {number}
+              <button type="button">Delete</button>
+            </li>
+          );
+        })}
       </ul>
     </>
   );
 };
-
-// return (
-//   <>
-//     <ul>
-//       {contacts.map(({ name, number, id }) => {
-//         return (
-//           <li key={id} id={id}>
-//             {name}: {number}
-//             <button type="button" onClick={handleDelete}>
-//               Delete
-//             </button>
-//           </li>
-//         );
-//       })}
-//     </ul>
-//   </>
-// );
 
 // ContactList.propTypes = {
 //   contacts: PropTypes.array,

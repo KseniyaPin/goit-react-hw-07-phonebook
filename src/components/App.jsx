@@ -1,8 +1,6 @@
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchContacts } from './redux/operations';
+import { useSelector } from 'react-redux';
 import {
-  selectContacts,
+  // selectContacts,
   selectError,
   selectIsLoading,
 } from './redux/selectors';
@@ -13,16 +11,8 @@ import { Filter } from './Filter/Filter';
 import css from './Form/Form.module.css';
 
 export default function App() {
-  const dispatch = useDispatch();
-  // Получаем части состояния
-  const { items } = useSelector(selectContacts);
   const isLoading = useSelector(selectIsLoading);
   const error = useSelector(selectError);
-
-  // Вызываем операцию
-  useEffect(() => {
-    dispatch(fetchContacts());
-  }, [dispatch]);
 
   // Рендерим разметку в зависимости от значений в состоянии
   return (
