@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { selectContacts, selectFilter } from '../redux/selectors';
 import { fetchContacts, deleteContact } from '../redux/operations';
 
@@ -10,18 +10,20 @@ export const ContactList = () => {
   const filter = useSelector(selectFilter);
 
   
-  
-  // Вычисляем массив Контактов, которые необходимо отображать в интерфейсе
-  const visibleContacts = selectVisibleContacts(contacts);
-
-  useEffect(() => {
+    useEffect(() => {
     dispatch(fetchContacts());
   }, [dispatch]);
   
+  // Вычисляем массив задач которые необходимо отображать в интерфейсе
+  const visibleContacts = selectVisibleContacts(contacts);
+
   function selectVisibleContacts(contacts) {
     return contacts
       ? contacts.filter(contact => {
-          return contact.name !== '' ? contact.name.toLowerCase().includes(filter.toLowerCase()) : ''
+          const contactName = contact.name
+            ? contact.name.toLowerCase().includes(filter.toLowerCase())
+            : '';
+          return contactName;
         })
       : [];
   }
@@ -45,7 +47,7 @@ export const ContactList = () => {
   );
 };
 
-// ContactList.propTypes = {
-//   contacts: PropTypes.array,
-//   deleteContact: PropTypes.func,
-// };
+ContactList.propTypes = {
+  contacts: PropTypes.array,
+  deleteContact: PropTypes.func,
+};

@@ -49,11 +49,7 @@ const contactsSlice = createSlice({
       state.isLoading = false;
       state.error = null;
       state.items = [...state.items, action.payload];
-      // return {
-      //   isLoading: false,
-      //   error: null,
-      //   items: [...state.items, action.payload]}
-    },
+          },
     // Обработка экшенов удаления Контакта
     [deleteContact.fulfilled](state, action) {
       state.isLoading = false;
