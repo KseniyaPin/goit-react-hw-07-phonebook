@@ -9,21 +9,22 @@ export const ContactList = () => {
   const contacts = useSelector(selectContacts);
   const filter = useSelector(selectFilter);
 
+  
+  
+  // Вычисляем массив Контактов, которые необходимо отображать в интерфейсе
+  const visibleContacts = selectVisibleContacts(contacts);
+
   useEffect(() => {
     dispatch(fetchContacts());
   }, [dispatch]);
-
   
-  // Вычисляем массив задач которые необходимо отображать в интерфейсе
-  // const visibleContacts = selectVisibleContacts(contacts);
-  
-  // function selectVisibleContacts(contacts) {
-  //   return contacts.length > 0
-  //     ? contacts.filter(contact => {
-  //         return contact.name.toLowerCase().includes(filter.toLowerCase());
-  //       })
-  //     : [];
-  // }
+  function selectVisibleContacts(contacts) {
+    return contacts
+      ? contacts.filter(contact => {
+          return contact.name !== '' ? contact.name.toLowerCase().includes(filter.toLowerCase()) : ''
+        })
+      : [];
+  }
 
   // Удаления задачи при клике по кнопке удаления, и передаем ей идентификатор
   const handleDelete = evt => dispatch(deleteContact(evt.currentTarget.id));
@@ -31,7 +32,7 @@ export const ContactList = () => {
   return (
     <>
       <ul>
-        {contacts.map(({ name, number, id }) => {
+        {visibleContacts.map(({ name, number, id }) => {
           return (
             <li key={id} id={id} onClick={handleDelete}>
               {name}: {number}
