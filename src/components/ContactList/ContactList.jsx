@@ -13,20 +13,8 @@ export const ContactList = () => {
     useEffect(() => {
     dispatch(fetchContacts());
   }, [dispatch]);
-  
-  // Вычисляем массив задач которые необходимо отображать в интерфейсе
-  const visibleContacts = selectVisibleContacts(contacts);
-
-  function selectVisibleContacts(contacts) {
-    return contacts
-      ? contacts.filter(contact => {
-          const contactName = contact.name
-            ? contact.name.toLowerCase().includes(filter.toLowerCase())
-            : '';
-          return contactName;
-        })
-      : [];
-  }
+   
+  const visibleContacts =  contacts.filter(contact => contact.name && contact.name.toLocaleLowerCase().includes(filter.toLowerCase()));
 
   // Удаления задачи при клике по кнопке удаления, и передаем ей идентификатор
   const handleDelete = evt => dispatch(deleteContact(evt.currentTarget.id));
